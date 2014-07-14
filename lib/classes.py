@@ -3,8 +3,8 @@ class AptDat():
     Information about the apt.dat file
     """
     
-    def __init__(self,aptDatFile):
-        self.aptDatFile = aptDatFile
+    def __init__(self):
+        self.aptDatFile = ''
         
         # Row codes for the node definition
         self.nodeCodes = ["111","112","113","114","115","116"]
@@ -12,18 +12,40 @@ class AptDat():
         # Row code filter
         self.filterCodes = ["1"] + self.nodeCodes
         
-        self.aptDatLines = []
+        self.aptDatData = {}
+        #self.lines = self.loadFile(self.aptDatFile)
         
     
-    def loadFile(self):
-        self.aptDatLines = []
-        aptDatFile = open(self.aptDatFile)
+    def getIcao(self,line):
+        vals = self.parseLine(line)
+        if vals[0] is not '1':
+            return False
+        return vals[4]
+        
+    def loadFile(self,aptDatFile=''):
+        if aptDatFile=='':
+            aptDatFile = self.aptDatFile
+        self.aptDatData = {'':[]}
+        icao = ''
+        aptDatFile = open(aptDatFile,'r')
         for line in aptDatFile:
-            print line.strip()
+            newIcao = False
+            newIcao = self.getIcao(line)
+            if newIcao:
+                icao = newIcao
+                if newIcao not in self.aptDatData:
+                    self.aptDatData[newIcao] = []
+            self.aptDatData[icao].append(self.parseLine(line))
+            #vals = self.parseLine(line)
+            #if vals[0] in self.filterCodes[]
+            #self.aptDatLines.append()
         aptDatFile.close()
+        print self.aptDatData
         
     def parseLine(self,line):
         values = line.strip().split()
+        if len(values) == 0:
+            values.append('')
         return values
     
     def searchIcaoCodes(self):
@@ -32,9 +54,7 @@ class AptDat():
         scenery. If there is no apt.dat file the list will be empty []
         """
         # If there is no apt.dat an empty list is returned
-        if not self.aptDat:
-            return []
-        
+       
         aptDatFile = open(self.aptDatFile)
         icaoCodes = []
         for line in aptDatFile:
