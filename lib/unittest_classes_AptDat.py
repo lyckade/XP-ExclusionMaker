@@ -36,6 +36,15 @@ class TestClassAptDat(unittest.TestCase):
         icaoCodes = self.aptDatInst.searchIcaoCodes()
         self.assertGreater(len(icaoCodes), 0, 'Minimum one icao should be found')
         self.assertTrue('EDDH' in icaoCodes, 'EDDH is part of the apt.dat')
+    
+    def testGetAirportArea(self):
+        self.aptDatInst.loadFile(self.aptDatFile)
+        latlng = self.aptDatInst.getAirportArea('EDDH')
+        self.assertEqual(latlng['lat']['max'], 53.65809636)
+        self.assertEqual(latlng['lat']['min'], 53.61470575)
+        self.assertEqual(latlng['lng']['max'], 10.00801022)
+        self.assertEqual(latlng['lng']['min'], 9.95672548)
+        
 
         
 

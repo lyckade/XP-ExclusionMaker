@@ -1,0 +1,18 @@
+I
+800
+DSF2TEXT
+
+# file: C:\Users\bogar\Desktop\X-Plane 10_beta\Custom Scenery\Exclusion_EDDH\Earth nav data\+50+000\+53+009.dsf
+
+PROPERTY sim/planet earth
+PROPERTY sim/overlay 1
+PROPERTY sim/require_agpoint 1/0
+PROPERTY sim/require_object 1/0
+PROPERTY sim/require_facade 1/0
+PROPERTY sim/creation_agent OverlayEditor 2.43
+PROPERTY sim/exclude_fac 9.96309319/53.61527714/10.00000000/53.65655375
+PROPERTY sim/west 9
+PROPERTY sim/east 10
+PROPERTY sim/north 54
+PROPERTY sim/south 53
+# Result code: 0
