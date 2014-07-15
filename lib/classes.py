@@ -73,11 +73,13 @@ class AptDat():
             icaoCodes.append(icao)
         return icaoCodes
     
-class DSFFile():
+class DSFTool():
     
     def __init__(self):
         return True
     
+    def makeFiles(self):
+        return True
     def test(self):
         return True
     
