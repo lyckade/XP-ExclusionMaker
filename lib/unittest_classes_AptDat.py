@@ -40,10 +40,10 @@ class TestClassAptDat(unittest.TestCase):
     def testGetAirportArea(self):
         self.aptDatInst.loadFile(self.aptDatFile)
         latlng = self.aptDatInst.getAirportArea('EDDH')
-        self.assertEqual(latlng['lat']['max'], 53.65809636)
-        self.assertEqual(latlng['lat']['min'], 53.61470575)
-        self.assertEqual(latlng['lng']['max'], 10.00801022)
-        self.assertEqual(latlng['lng']['min'], 9.95672548)
+        self.assertEqual(latlng.latMax, 53.65809636)
+        self.assertEqual(latlng.latMin, 53.61470575)
+        self.assertEqual(latlng.lngMax, 10.00801022)
+        self.assertEqual(latlng.lngMin, 9.95672548)
         
 
         
