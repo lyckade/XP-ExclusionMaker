@@ -72,3 +72,14 @@ class AptDat():
         for icao in self.aptDatData:
             icaoCodes.append(icao)
         return icaoCodes
+    
+class DSFFile():
+    
+    def __init__(self):
+        return True
+    
+    def test(self):
+        return True
+    
+    
+    
