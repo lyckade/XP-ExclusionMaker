@@ -73,6 +73,7 @@ class Area():
         self.latMax = -180.0
         self.lngMin = 180.0
         self.lngMax = -180.0
+        self.corners = self.makeCorners()
         
     def addArea(self,Area):
         self.addPoint(Area.latMin, Area.lngMin)
@@ -89,6 +90,7 @@ class Area():
             self.lngMin = lng
         if self.lngMax < lng:
             self.lngMax = lng
+        self.corners = self.makeCorners()
             
     def echo(self,printVals=True):
         output = "latMin: %s, latMax: %s, lngMin: %s, lngMax: %s" % (self.latMin,self.latMax,self.lngMin,self.lngMax)
@@ -96,6 +98,14 @@ class Area():
             print output
         else:
             return output
+    
+    def makeCorners(self):
+        corners = [
+                        (self.latMin,self.lngMin),
+                        (self.latMax,self.lngMin),
+                        (self.latMin,self.lngMax),
+                        (self.latMax,self.lngMax)]
+        return corners
 
         
     
@@ -106,15 +116,46 @@ class DSFTool():
         self.Area = Area()
         
     
-    def addAreaProperty(self,property,latlng):
-        """latlng is a dictionary with min and max values latlng['lat']['min']"""
-        return True
+    def addAreaProperty(self,property,Area):
+        self.Area.addArea(Area)
+        self.areaPropertyToFile(property, Area)
+        
+    def areaPropertyToFile(self,property,Area):
+        pass
+        
+        
     
     #def addSimpleProperty(self,property,string):
     #    return True
     
     #def makeFiles(self):
     #    return True
+    
+    def koordinateToString(self,koordinate,fill=2,round=1):
+        from math import floor
+        koordinate = float(koordinate)/round
+        if koordinate >= 0.0:
+            prefix = '+'
+        else:
+            prefix = '-'
+        value = str(int(abs(floor((koordinate)))*round))
+        string = '%s%s' % (prefix,value.zfill(fill))
+        return string
+        
+            
+    def makeFilesFromArea(self,Area):
+        files = []
+        for point in Area.corners:
+            fileName = self.makeFileName(point[0],point[1])
+            if fileName not in files:
+                files.append(fileName)
+        return files
+             
+    
+    def makeFileName(self,south,west):
+        fileName = '%s%s.txt' % (self.koordinateToString(south, 2, 1),self.koordinateToString(west, 3, 1))
+        return fileName
+        
     
     def makeHeader(self,south,west):
         headerDef = [

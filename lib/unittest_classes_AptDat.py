@@ -14,7 +14,6 @@ class TestClassAptDat(unittest.TestCase):
         self.line1 = "100 30.00 1 0 0.25 0 2 0 12  41.25261908 -072.03575022    0   69 2 0 0 1 30  41.25141173 -072.02738496    0   71 2 0 0 1"
         self.line2 = "1     53 1 0 EDDH Hamburg Airport"
     
-    
     def testGetIcao(self):
         icao = self.aptDatInst.getIcao(self.line1)
         self.assertFalse(icao, "ICAO Definition just for linetype 1")
