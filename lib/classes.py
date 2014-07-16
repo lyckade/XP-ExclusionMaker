@@ -122,6 +122,7 @@ class DSFTool():
         
     def areaPropertyToFile(self,property,Area):
         pass
+    
         
         
     
@@ -141,7 +142,12 @@ class DSFTool():
         value = str(int(abs(floor((koordinate)))*round))
         string = '%s%s' % (prefix,value.zfill(fill))
         return string
-        
+    
+    def makeDirFromFilename(self,filename):
+        south = filename[:3]
+        west = filename[3:7]
+        dir = "%s%s" % (self.koordinateToString(south, 2, 10),self.koordinateToString(west, 3, 10))
+        return dir
             
     def makeFilesFromArea(self,Area):
         files = []
