@@ -35,13 +35,22 @@ class Test(unittest.TestCase):
         self.assertEqual(dsf.makeFileName('-33.9273','151.393'), '-34+151.txt')
         self.assertEqual(dsf.makeFileName('53.9273','10.393'), '+53+010.txt')
         
-    def testMakeFileFromAres(self):
+    def testMakeFilesFromAres(self):
         dsf = classes.DSFTool()
         area = classes.Area()
         area.addPoint(53.65809636,10.00801022)
         area.addPoint(53.61470575,9.95672548)
         files = dsf.makeFilesFromArea(area)
         self.assertEqual(files, ['+53+009.txt', '+53+010.txt'])
+    
+    def testAddAreaProperty(self):
+        dsf = classes.DSFTool()
+        area = classes.Area()
+        area.addPoint(53.65809636,10.00801022)
+        area.addPoint(53.61470575,9.95672548)
+        dsf.addAreaProperty('PROPERTY sim/exclude_fac',area)
+        self.assertTrue('PROPERTY sim/exclude_fac 10.0/53.61470575/10.00801022/53.65809636' in dsf.dsfFiles['+53+010.txt'])
+        
         
     def testMakeDirFromFilename(self):
         dsf = classes.DSFTool()
@@ -51,6 +60,11 @@ class Test(unittest.TestCase):
         self.assertEqual(dir, '+40+000')
         dir = dsf.makeDirFromFilename('-21-045.txt')
         self.assertEqual(dir, '-30-050')
+        
+    def testMakeHeader(self):
+        dsf = classes.DSFTool()
+        output = ['I', '800', 'DSF2TEXT', '', 'PROPERTY sim/planet earth', 'PROPERTY sim/overlay 1', 'PROPERTY sim/creation_agent XPExclusionMaker', 'PROPERTY sim/west -81', 'PROPERTY sim/east -80', 'PROPERTY sim/north 27', 'PROPERTY sim/south 26']
+        self.assertEqual(dsf.makeHeader('+26-081.txt'), output)
 
 
 

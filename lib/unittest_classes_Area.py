@@ -35,6 +35,16 @@ class Test(unittest.TestCase):
         self.assertEqual(self.AreaInst.echo(False), 'latMin: 53.0003, latMax: 53.4, lngMin: 9.883, lngMax: 10.123')
         
 
+    def testCutArea(self):
+        Area1 = classes.Area()
+        Area1.addPoint(53.0000,10.000)
+        Area1.addPoint(54.0000,9.000)
+        Area2 = classes.Area()
+        Area2.addPoint(53.0003,10.123)
+        Area2.addPoint(52.123,8.883)
+        Area2.cutArea(Area1)
+        self.assertEqual(Area2.echo(Fales), 'latMin: 53.0, latMax: 53.0003, lngMin: 9.0, lngMax: 10.0')
+        
     def testEcho(self):
         self.AreaInst.addPoint(-80.1,26.01)
         self.AreaInst.addPoint(-79.2,27.123)

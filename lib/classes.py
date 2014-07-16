@@ -91,6 +91,17 @@ class Area():
         if self.lngMax < lng:
             self.lngMax = lng
         self.corners = self.makeCorners()
+        
+    def cutArea(self,Area):
+
+        if self.latMin < Area.latMin:
+            self.latMin = Area.latMin
+        if self.lngMin < Area.lngMin:
+            self.lngMin = Area.lngMin
+        if self.latMax > Area.latMax:
+            self.latMax = Area.latMax
+        if self.lngMax > Area.lngMax:
+            self.lngMax = Area.lngMax
             
     def echo(self,printVals=True):
         output = "latMin: %s, latMax: %s, lngMin: %s, lngMax: %s" % (self.latMin,self.latMax,self.lngMin,self.lngMax)
@@ -116,21 +127,22 @@ class DSFTool():
         self.Area = Area()
         
     
-    def addAreaProperty(self,property,Area):
-        self.Area.addArea(Area)
-        self.areaPropertyToFile(property, Area)
+    def addAreaProperty(self,property,PropArea):
+        self.Area.addArea(PropArea)
+        fileNames = self.makeFilesFromArea(PropArea)
+        for fileName in fileNames:
+            fileArea = Area()
+            south,north,west,east = self.makeBordersFromFilename(fileName)
+            fileArea.addPoint(north, west)
+            fileArea.addPoint(south, east)
+            newArea = Area()
+            newArea.addArea(PropArea)
+            newArea.cutArea(fileArea)
+            self.dsfFiles[fileName].append("%s %s" % (property,self.areaToString(newArea)))
         
-    def areaPropertyToFile(self,property,Area):
-        pass
     
-        
-        
-    
-    #def addSimpleProperty(self,property,string):
-    #    return True
-    
-    #def makeFiles(self):
-    #    return True
+    def areaToString(self,Area):
+        return "%s/%s/%s/%s" % (Area.lngMin,Area.latMin,Area.lngMax,Area.latMax)
     
     def koordinateToString(self,koordinate,fill=2,round=1):
         from math import floor
@@ -143,9 +155,17 @@ class DSFTool():
         string = '%s%s' % (prefix,value.zfill(fill))
         return string
     
-    def makeDirFromFilename(self,filename):
-        south = filename[:3]
-        west = filename[3:7]
+    
+    def makeBordersFromFilename(self,fileName):
+        south = int(fileName[:3])
+        north = south + 1
+        west = int(fileName[3:7])
+        east = west + 1 
+        return (south,north,west,east)
+        
+    def makeDirFromFilename(self,fileName):
+        south = fileName[:3]
+        west = fileName[3:7]
         dir = "%s%s" % (self.koordinateToString(south, 2, 10),self.koordinateToString(west, 3, 10))
         return dir
             
@@ -155,6 +175,8 @@ class DSFTool():
             fileName = self.makeFileName(point[0],point[1])
             if fileName not in files:
                 files.append(fileName)
+            if fileName not in self.dsfFiles:
+                self.dsfFiles[fileName] = self.makeHeader(fileName)
         return files
              
     
@@ -163,7 +185,7 @@ class DSFTool():
         return fileName
         
     
-    def makeHeader(self,south,west):
+    def makeHeader(self,fileName):
         headerDef = [
                      'I',
                      '800',
@@ -172,8 +194,13 @@ class DSFTool():
                      'PROPERTY sim/planet earth',
                      'PROPERTY sim/overlay 1',
                      'PROPERTY sim/creation_agent XPExclusionMaker']
-        #headerDef.append(PROPERTY sim/west)
-    
+
+        south,north,west,east = self.makeBordersFromFilename(fileName)
+        headerDef.append('PROPERTY sim/west %s' % (west))
+        headerDef.append('PROPERTY sim/east %s' % (east))
+        headerDef.append('PROPERTY sim/north %s' % (north))
+        headerDef.append('PROPERTY sim/south %s' % (south))
+        return headerDef
     
     
     
