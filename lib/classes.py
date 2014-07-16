@@ -4,6 +4,8 @@ class AptDat():
     """
     
     def __init__(self):
+        
+        
         self.aptDatFile = ''
         
         # Row codes for the node definition
@@ -123,6 +125,11 @@ class Area():
 class DSFTool():
     
     def __init__(self):
+        
+        self.sceneryPath = "examples/ExclusionScenery"
+        
+        self.dataDir = "Earth nav data"
+        
         self.dsfFiles = {}
         self.Area = Area()
         
@@ -201,6 +208,19 @@ class DSFTool():
         headerDef.append('PROPERTY sim/north %s' % (north))
         headerDef.append('PROPERTY sim/south %s' % (south))
         return headerDef
+    
+    def writeSceneryTxt(self,lines):
+        out = open(self.sceneryPath,"w")
+        for line in lines:
+            out.write("%s\n" % (line))
+        out.close()
+    
+    def writeFiles(self):
+        import os
+        for fileName in self.dsfFiles:
+            subdir = self.makeDirFromFilename(fileName)
+            
+            
     
     
     
