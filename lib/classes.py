@@ -67,6 +67,8 @@ class AptDat():
         """
         icaoCodes = []
         for icao in self.aptDatData:
+            if icao == '':
+                continue
             icaoCodes.append(icao)
         return icaoCodes
 
@@ -229,9 +231,9 @@ class DSFTool():
         if not os.path.exists(path):
             os.makedirs(path)
         sceneryTxt = ['LAYERGROUP Exclusion']
-        self.writeTxt('%s/scenery.txt' % self.sceneryPath,sceneryTxt)
         if self.icao:
-            sceneryTXT.append('ICAO %s' % (self.icao))
+            sceneryTxt.append('ICAO %s' % (self.icao))
+        self.writeTxt('%s/scenery.txt' % self.sceneryPath,sceneryTxt)
         for fileName in self.dsfFiles:
             subdir = self.makeDirFromFilename(fileName)
             subpath = '%s/%s' % (path,subdir)
@@ -241,7 +243,7 @@ class DSFTool():
             dsfFile = '%s/%s.dsf' % (subpath,fileName)
             self.writeTxt(dsfTxtFile, self.dsfFiles[fileName])
             #os.system("%s" % os.path.abspath('DSFTool.exe'))
-            os.system(r'%s -text2dsf "%s" "%s"' % (os.path.abspath('DSFTool.exe'),os.path.abspath(dsfTxtFile),os.path.abspath(dsfFile)))    
+            os.system(r'%s -text2dsf "%s" "%s"' % (os.path.abspath('lib/DSFTool.exe'),os.path.abspath(dsfTxtFile),os.path.abspath(dsfFile)))    
             print os.path.abspath('DSFTool.exe')    
             
     

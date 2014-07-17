@@ -43,6 +43,8 @@ class TestClassAptDat(unittest.TestCase):
         self.assertEqual(latlng.latMin, 53.61470575)
         self.assertEqual(latlng.lngMax, 10.00801022)
         self.assertEqual(latlng.lngMin, 9.95672548)
+        latlng = self.aptDatInst.getAirportArea('Y55')
+        latlng.echo()
         
 
         
