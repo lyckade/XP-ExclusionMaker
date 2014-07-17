@@ -21,6 +21,8 @@ class Test(unittest.TestCase):
         self.assertEqual(self.AreaInst.latMax, -79.2)
         self.assertEqual(self.AreaInst.lngMin, 26.01)
         self.assertEqual(self.AreaInst.lngMax, 27.123)
+        self.assertEqual(self.AreaInst.corners[0], (-80.1,26.01))
+        self.assertEqual(self.AreaInst.corners[3], (-79.2,27.123))
     
     def testAddArea(self):
         Area2 = classes.Area()
