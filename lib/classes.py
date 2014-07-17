@@ -14,6 +14,7 @@ class AptDat():
         # Row code filter
         self.filterCodes = ["1"] + self.nodeCodes
         
+        
         self.aptDatData = {}
         #self.lines = self.loadFile(self.aptDatFile)
         
@@ -126,7 +127,12 @@ class DSFTool():
     
     def __init__(self):
         
-        self.sceneryPath = "examples/ExclusionScenery"
+        self.sceneryPath = "../examples/ExclusionScenery"
+        
+        self.icao = False
+        # ICAO is used for the scenery.txt file
+        
+        self.dsfTool = 'DSFTool.exe'
         
         self.dataDir = "Earth nav data"
         
@@ -149,7 +155,7 @@ class DSFTool():
         
     
     def areaToString(self,Area):
-        return "%s/%s/%s/%s" % (Area.lngMin,Area.latMin,Area.lngMax,Area.latMax)
+        return "%0.8f/%0.8f/%0.8f/%0.8f" % (Area.lngMin,Area.latMin,Area.lngMax,Area.latMax)
     
     def koordinateToString(self,koordinate,fill=2,round=1):
         from math import floor
@@ -188,7 +194,7 @@ class DSFTool():
              
     
     def makeFileName(self,south,west):
-        fileName = '%s%s.txt' % (self.koordinateToString(south, 2, 1),self.koordinateToString(west, 3, 1))
+        fileName = '%s%s' % (self.koordinateToString(south, 2, 1),self.koordinateToString(west, 3, 1))
         return fileName
         
     
@@ -209,17 +215,34 @@ class DSFTool():
         headerDef.append('PROPERTY sim/south %s' % (south))
         return headerDef
     
-    def writeSceneryTxt(self,lines):
-        out = open(self.sceneryPath,"w")
+    
+    
+    def writeTxt(self,path,lines,mode='w'):
+        out = open(path,mode)
         for line in lines:
             out.write("%s\n" % (line))
         out.close()
     
     def writeFiles(self):
         import os
+        path = "%s/%s" % (self.sceneryPath,self.dataDir)
+        if not os.path.exists(path):
+            os.makedirs(path)
+        sceneryTxt = ['LAYERGROUP Exclusion']
+        self.writeTxt('%s/scenery.txt' % self.sceneryPath,sceneryTxt)
+        if self.icao:
+            sceneryTXT.append('ICAO %s' % (self.icao))
         for fileName in self.dsfFiles:
             subdir = self.makeDirFromFilename(fileName)
-            
+            subpath = '%s/%s' % (path,subdir)
+            if not os.path.exists(subpath):
+                os.makedirs(subpath)
+            dsfTxtFile = '%s/%s.txt' % (subpath,fileName)
+            dsfFile = '%s/%s.dsf' % (subpath,fileName)
+            self.writeTxt(dsfTxtFile, self.dsfFiles[fileName])
+            #os.system("%s" % os.path.abspath('DSFTool.exe'))
+            os.system(r'%s -text2dsf "%s" "%s"' % (os.path.abspath('DSFTool.exe'),os.path.abspath(dsfTxtFile),os.path.abspath(dsfFile)))    
+            print os.path.abspath('DSFTool.exe')    
             
     
     
