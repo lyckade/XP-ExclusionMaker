@@ -9,7 +9,7 @@ class AptDat():
         self.aptDatFile = ''
         
         # Row codes for the node definition
-        self.nodeCodes = ["111","112","113","114","115","116"]
+        self.nodeCodes = ["14","18","19","111","112","113","114","115","116"]
         
         # Row code filter
         self.filterCodes = ["1"] + self.nodeCodes
