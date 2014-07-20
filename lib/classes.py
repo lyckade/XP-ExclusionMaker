@@ -122,6 +122,17 @@ class Area():
                         (self.latMin,self.lngMax),
                         (self.latMax,self.lngMax)]
         return corners
+    
+    def makePadding(self,fakt):
+        deltaLat = (self.latMax - self.latMin) * fakt
+        deltaLng = (self.lngMax - self.lngMin) * fakt
+        self.latMin = self.latMin - deltaLat
+        self.latMax = self.latMax + deltaLat
+        self.lngMin = self.lngMin - deltaLng
+        self.lngMax = self.lngMax + deltaLng
+        self.corners = self.makeCorners()
+        
+        
 
         
     

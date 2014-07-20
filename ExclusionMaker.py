@@ -11,16 +11,16 @@ properties = ['PROPERTY sim/exclude_fac',
               'PROPERTY sim/exclude_net',
               'PROPERTY sim/exclude_str',
               'PROPERTY sim/exclude_pol']
-skipIcaos = ['Y55','4B7','WT18','W23']
+
 
 aptDat = lib.classes.AptDat()
 aptDat.loadFile('src/apt.dat')
 icaoCodes = aptDat.searchIcaoCodes()
 for icaoCode in icaoCodes:
-    if icaoCode in skipIcaos:
-        continue
+
     print "Making exclusion scenery for %s" % (icaoCode)
     airportArea = aptDat.getAirportArea(icaoCode)
+    airportArea.makePadding(0.1)
     dsfTool = lib.classes.DSFTool()
     dsfTool.icao = icaoCode
     dsfTool.sceneryPath = 'examples/ExclusionScenery/Exclusion_%s' % (icaoCode)
