@@ -1,8 +1,3 @@
-'''
-Created on 17.07.2014
-
-@author: lyckade
-'''
 import lib.classes
 
 properties = ['PROPERTY sim/exclude_fac',
@@ -11,7 +6,6 @@ properties = ['PROPERTY sim/exclude_fac',
               'PROPERTY sim/exclude_net',
               'PROPERTY sim/exclude_str',
               'PROPERTY sim/exclude_pol']
-
 
 aptDat = lib.classes.AptDat()
 aptDat.loadFile('src/apt.dat')
@@ -25,5 +19,5 @@ for icaoCode in icaoCodes:
     dsfTool.icao = icaoCode
     dsfTool.sceneryPath = 'examples/ExclusionScenery/Exclusion_%s' % (icaoCode)
     for p in properties:
-        dsfTool.addAreaProperty(p,airportArea)
+        dsfTool.addAreaProperty(p, airportArea)
     dsfTool.writeFiles()
